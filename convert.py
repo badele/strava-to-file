@@ -28,12 +28,12 @@ ap.add_argument("-u", "--user", required=True,
 args = vars(ap.parse_args())
  
 
-def md5(filename):
-    hash_md5 = hashlib.md5()
-    with open(filename, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
+# def md5(filename):
+#     hash_md5 = hashlib.md5()
+#     with open(filename, "rb") as f:
+#         for chunk in iter(lambda: f.read(4096), b""):
+#             hash_md5.update(chunk)
+#     return hash_md5.hexdigest()
 
 # Crete hashfolder
 home = str(Path.home())
@@ -56,24 +56,25 @@ destfolder = "%(rootfolder)s/%(user)s" % locals()
 if not os.path.exists(destfolder):
     os.makedirs(destfolder)
 
-# Summarize activities
-activities = dict()
-format = '%Y-%m-%d %H:%M:%S'
-lines = readcsv('activities.csv')
-for row in lines:
+noconverted = []
+nbrides = 0
+traces = readcsv('activities.csv')
+for row in traces:
     (id,date,name,activity,description,elapsed_time,distance,commute,gear,origfilename) = row
     #print ("ID: %(id)s, DATE: %(date)s ACTIVITY: %(activity)s" % locals())
 
     if activity not in RIDE:
         continue
 
+    nbrides += 1
     if os.path.exists(origfilename):
 
         filename = origfilename.replace("activities/","")
         filename, ext = os.path.splitext(filename)
 
-        destfilename = "%(destfolder)s/%(filename)s.gpx" % locals()
-        if not os.path.exists(destfilename):
+        destfilename = "%(destfolder)s/%(filename)s_converted_trace.gpx" % locals()
+        destgziped = "%(destfilename)s.gz" % locals()
+        if not os.path.exists(destgziped):
             if '.fit.gz' in origfilename:
                 converter="convert_fit_to_gpx.sh"
             elif '.tcx.gz' in origfilename:
@@ -92,3 +93,13 @@ for row in lines:
             print (cmd)
 
             subprocess.call(cmd.split())
+
+        if not os.path.exists(destgziped):
+            noconverted.append(filename)
+
+print ("This files bollow, cannot be convert")
+print ("====================================")
+for line in noconverted:
+    print (line)
+print ("====================================")
+print ("%s files cannot be convert on %s" % (len(noconverted),nbrides))

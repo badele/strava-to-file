@@ -10,5 +10,7 @@ unzip export_*.zip
 # Summary
 python summarize.py
 
-# Upload
-```
+# Convert
+cd your_dezipped_strava_activities
+python convert.py -d ~/private/projects/jesuisundesdeux/datas/traces -u $(basename $(pwd)
+ ```
