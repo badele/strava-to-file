@@ -75,20 +75,18 @@ for row in traces:
         destfilename = "%(destfolder)s/%(filename)s_converted_trace.gpx" % locals()
         destgziped = "%(destfilename)s.gz" % locals()
         if not os.path.exists(destgziped):
-            if '.fit.gz' in origfilename:
+            if origfilename.rfind('.fit') > 0:
                 converter="convert_fit_to_gpx.sh"
-            elif '.tcx.gz' in origfilename:
+            elif origfilename.rfind('.tcx') > 0:
                 converter="convert_tcx_to_gpx.sh"
-            elif '.gpx.gz' in origfilename:
-                converter="convert_gpx_to_gpx.sh"
-            elif '.gpx' in origfilename:
+            elif origfilename.rfind('.gpx') > 0:
                 converter="convert_gpx_to_gpx.sh"
             else:
                 print ("Please add support for %(origfilename)s" % locals())
                 continue
 
             # Convert
-            print("Convert %(filename)s to %(filename)s.gpx" % locals())
+            print("Convert %(filename)s%(ext)s to %(destfilename)s.gz" % locals())
             cmd = "%(RUNNING_PATH)s/%(converter)s %(origfilename)s %(destfilename)s" % locals()
             print (cmd)
 
@@ -96,7 +94,7 @@ for row in traces:
 
         if not os.path.exists(destgziped):
             noconverted.append(filename)
-
+sys.exit()
 print ("This files bollow, cannot be convert")
 print ("====================================")
 for line in noconverted:

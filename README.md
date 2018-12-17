@@ -14,3 +14,6 @@ python summarize.py
 cd your_dezipped_strava_activities
 python convert.py -d ~/private/projects/jesuisundesdeux/datas/traces -u $(basename $(pwd)
  ```
+
+ # Setup python
+ To setup in a Python virtual environment, run `bash setup.sh` (run `deactivate` to exit the virtual environment)
