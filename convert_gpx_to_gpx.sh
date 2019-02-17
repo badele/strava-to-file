@@ -6,7 +6,7 @@
 # Convert to GPX
 file $1 | grep gzip > /dev/null
 if [ $? -eq 0 ]; then
-    cp $1 $2
+    cp $1 $2.gz
 else
     cp $1 $2
     gzip $2

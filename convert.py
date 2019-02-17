@@ -10,12 +10,10 @@ import sys
 import csv
 import json
 import hashlib
-import requests
 import argparse
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from requests.auth import HTTPBasicAuth
 
 RIDE = ['Ride']
 
@@ -86,7 +84,7 @@ for row in traces:
                 continue
 
             # Convert
-            print("Convert %(filename)s%(ext)s to %(destfilename)s.gz" % locals())
+            print("Convert %(filename)s%(ext)s to %(destgziped)s" % locals())
             cmd = "%(RUNNING_PATH)s/%(converter)s %(origfilename)s %(destfilename)s" % locals()
             print (cmd)
 
