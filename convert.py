@@ -15,7 +15,7 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-RIDE = ['Ride']
+RIDE = ['Ride','Sortie à vélo']
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -24,7 +24,7 @@ ap.add_argument("-d", "--destination", required=True,
 ap.add_argument("-u", "--user", required=True,
 	help="username")
 args = vars(ap.parse_args())
- 
+
 
 # def md5(filename):
 #     hash_md5 = hashlib.md5()
@@ -37,14 +37,14 @@ args = vars(ap.parse_args())
 home = str(Path.home())
 RUNNING_PATH = os.path.dirname(os.path.realpath(__file__))
 
-def readcsv(filename):	
+def readcsv(filename):
     with open(filename, 'rt') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
 
         lines = []
         for row in reader:
             lines.append (row)
-        
+
     return lines
 
 # Create traces folder
@@ -58,8 +58,7 @@ noconverted = []
 nbrides = 0
 traces = readcsv('activities.csv')
 for row in traces:
-    (id,date,name,activity,description,elapsed_time,distance,commute,gear,origfilename) = row
-    #print ("ID: %(id)s, DATE: %(date)s ACTIVITY: %(activity)s" % locals())
+    (id,date,name,activity,description,elapsed_time,distance,effort_measurement,transport,material,origfilename) = row
 
     if activity not in RIDE:
         continue
